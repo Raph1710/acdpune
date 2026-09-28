@@ -12,12 +12,12 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import BackToTop from '@/components/BackToTop';
 import JoinFormModal from '@/components/JoinFormModal';
+import EventMarquee from '@/components/EventMarquee';
 import { useReducedMotion } from '@/hooks/use-reduced-motion';
 import { fadeUp, staggerContainer, pageTransition } from '@/lib/motion-variants';
 import { type ApplicationRole } from '@/hooks/use-community-applications';
 import afreenBano from '@/assets/panelist/Afreen Bano.jpeg';
 import priyankaSinghSolanki from '@/assets/panelist/Priyanka Singh Solanki.jpeg';
-// import wingsSvg from '@/assets/wings.svg';
 
 /*
  * ── Standee color palette ─────────────────────────────────────
@@ -88,6 +88,7 @@ const WomenInTechPage = () => {
       </Helmet>
 
       <motion.div className="min-h-screen bg-[#0A0A0A]" variants={reducedMotion ? {} : pageTransition} initial="initial" animate="animate" exit="exit">
+        <EventMarquee />
         <Header />
 
         {/* ═══ HERO — Purple gradient matching standee ═══ */}
@@ -110,52 +111,38 @@ const WomenInTechPage = () => {
               <ArrowLeft className="h-4 w-4" /> Back to Home
             </Link>
 
-            {/* Wings + Title — side by side layout */}
+            {/* Visually-hidden h1 for SEO — logo is displayed as an image */}
+            <h1 className="sr-only">Her Tech Era — AWS User Group Pune</h1>
+
+            {/* Full Logo SVG — centrepiece of the hero */}
             <motion.div
-              className="flex items-center justify-center gap-2 sm:gap-4 md:gap-6 lg:gap-8 mx-auto"
-              initial={reducedMotion ? {} : { opacity: 0, scale: 0.9 }}
+              className="relative flex items-center justify-center mx-auto"
+              initial={reducedMotion ? {} : { opacity: 0, scale: 0.88 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, ease: 'easeOut' }}
+              transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
             >
-              {/* Left Wing (right_wing.svg faces left) */}
-              <motion.img
-                src="/wings/right_wing.svg"
-                alt=""
-                aria-hidden="true"
-                className="pointer-events-none select-none w-[100px] sm:w-[140px] md:w-[220px] lg:w-[300px]"
+              {/* Glowing halo behind the logo */}
+              <div
+                className="absolute inset-0 pointer-events-none"
                 style={{
-                  filter: 'brightness(1.3) drop-shadow(0 0 40px rgba(147,97,161,0.4))',
+                  background: 'radial-gradient(ellipse at center, rgba(147,97,161,0.45) 0%, rgba(109,100,173,0.22) 45%, transparent 70%)',
+                  filter: 'blur(50px)',
+                  transform: 'scale(1.3)',
                 }}
-                initial={reducedMotion ? {} : { x: -80, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                transition={{ duration: 1, delay: 0.2, ease: 'easeOut' }}
               />
-
-              {/* Title */}
-              <h1
-                className="font-serif text-[clamp(42px,8vw,96px)] font-bold leading-[0.95] tracking-[-0.02em] text-white shrink-0"
-                style={{ fontFamily: "'DM Serif Display', serif" }}
-              >
-                HER<br />TECH<br />ERA
-              </h1>
-
-              {/* Right Wing (left_wing.svg faces right) */}
-              <motion.img
-                src="/wings/left_wing.svg"
-                alt=""
-                aria-hidden="true"
-                className="pointer-events-none select-none w-[100px] sm:w-[140px] md:w-[220px] lg:w-[300px]"
+              <img
+                src="/hertech-logo.svg"
+                alt="Her Tech Era — AWS User Group Pune"
+                className="relative w-full max-w-[680px] sm:max-w-[780px] select-none"
                 style={{
-                  filter: 'brightness(1.3) drop-shadow(0 0 40px rgba(147,97,161,0.4))',
+                  filter: 'brightness(1.15) drop-shadow(0 0 60px rgba(147,97,161,0.55)) drop-shadow(0 0 20px rgba(109,100,173,0.4))',
                 }}
-                initial={reducedMotion ? {} : { x: 80, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                transition={{ duration: 1, delay: 0.2, ease: 'easeOut' }}
+                draggable={false}
               />
             </motion.div>
 
             {/* Tagline — cursive */}
-            <motion.p className="mt-8 text-[clamp(20px,3.5vw,36px)] text-white/90"
+            <motion.p className="mt-6 text-[clamp(20px,3.5vw,36px)] text-white/90"
               style={{ fontFamily: "'Dancing Script', cursive" }}
               initial={reducedMotion ? {} : { opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -240,20 +227,35 @@ const WomenInTechPage = () => {
               <motion.h2 className="section-title mt-3" initial={reducedMotion ? {} : { opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-80px' }} transition={{ duration: 0.5, delay: 0.08 }}>
                 It's Her Tech Era in action
               </motion.h2>
-              <motion.div className="mt-10 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3" variants={staggerContainer(0.06)} initial="hidden" whileInView="show" viewport={{ once: true, margin: '-60px' }}>
+              <motion.div
+                className="mt-10 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3"
+                variants={staggerContainer(0.06)}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true, margin: '-60px' }}
+              >
                 {galleryImages.map((src, i) => (
                   <motion.div
                     key={src}
                     variants={fadeUp}
                     whileHover={reducedMotion ? {} : { scale: 1.03, boxShadow: '0 0 0 1px rgba(109,100,173,0.4), 0 12px 36px rgba(109,100,173,0.15)' }}
-                    className={`relative overflow-hidden rounded-xl border border-[rgba(255,255,255,0.06)] bg-[#141414] cursor-pointer ${i === 0 || i === 3 ? 'md:row-span-2' : ''}`}
+                    className={`group relative overflow-hidden rounded-xl border border-[rgba(255,255,255,0.06)] bg-[#141414] cursor-pointer ${
+                      i === 0 || i === 4 ? 'md:col-span-2 md:row-span-2' :
+                      i === 3 || i === 7 ? 'md:row-span-2' : ''
+                    }`}
                   >
                     <img
                       src={`/her-tech-era-photos/${src}`}
                       alt={`Her Tech Era highlight ${i + 1}`}
-                      className={`w-full object-cover transition-transform duration-500 hover:scale-105 ${i === 0 || i === 3 ? 'aspect-[3/4]' : 'aspect-[4/3]'}`}
+                      className={`w-full object-cover transition-transform duration-700 group-hover:scale-105 ${
+                        i === 0 || i === 4 ? 'aspect-square md:aspect-[4/3]' :
+                        i === 3 || i === 7 ? 'aspect-[3/4]' :
+                        'aspect-[4/3]'
+                      }`}
                       loading="lazy"
                     />
+                    {/* Subtle overlay on hover */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#6D64AD]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
                   </motion.div>
                 ))}
               </motion.div>
